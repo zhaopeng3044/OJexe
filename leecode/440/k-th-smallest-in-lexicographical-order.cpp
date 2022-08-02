@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <ctime>
 
 unsigned int string_to_int(const char *str);
 
@@ -16,8 +17,10 @@ int main(int argc, char *argv[])
     const unsigned int SIZE = string_to_int(argv[1]);
     const unsigned int k = string_to_int(argv[2]);
 
-    // process_func(SIZE, k);
+    process_func(SIZE, k);
+
     loop_find_solution(SIZE, k);
+
     return 0;
 }
 unsigned int mini_k_solution(unsigned int current_value, unsigned int current_index, const unsigned int max_value, const unsigned int target_index)
@@ -55,7 +58,12 @@ unsigned int mini_k_solution(unsigned int current_value, unsigned int current_in
 
 void loop_find_solution(unsigned int n, unsigned int k)
 {
-    printf("%u\n", mini_k_solution(1, 1, n, k));
+    time_t start = time(nullptr);
+
+    unsigned int result = mini_k_solution(1, 1, n, k);
+
+    time_t end = time(nullptr);
+    printf("%u; time consume %f\n", result, difftime(end, start));
 }
 
 int str_compare(const void *p1, const void *p2)
@@ -92,6 +100,8 @@ int int_len(int value)
 
 void process_func(const int MAX_VALUE, int k)
 {
+    time_t start = time(nullptr);
+
     const int SIZE = MAX_VALUE;
     const int MAX_NUM_LEN = 11;
 
@@ -112,5 +122,7 @@ void process_func(const int MAX_VALUE, int k)
 
     qsort((void *)parray, SIZE, MAX_NUM_LEN * sizeof(char), str_compare);
 
-    printf("%s\n", parray[k - 1]);
+    time_t end = time(nullptr);
+
+    printf("%s; time consume %f\n", parray[k - 1], difftime(end, start));
 }
