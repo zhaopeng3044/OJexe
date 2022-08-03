@@ -14,18 +14,19 @@ void loop_find_solution(unsigned int n, unsigned int k);
 
 int main(int argc, char *argv[])
 {
-    // const unsigned int SIZE = string_to_int(argv[1]);
-    // const unsigned int k = string_to_int(argv[2]);
+    const unsigned int SIZE = string_to_int(argv[1]);
+    const unsigned int k = string_to_int(argv[2]);
 
-    unsigned int SIZE = 957747794;
-    unsigned int k = 366107483;
+    // unsigned int SIZE = 957747794;
+    // unsigned int k = 366107483;
     // process_func(SIZE, k);
 
     loop_find_solution(SIZE, k);
 
     return 0;
 }
-unsigned int mini_k_solution(unsigned int current_value, unsigned int current_index, const unsigned int max_value, const unsigned int target_index)
+// current_value should be unsigned long long. when current_value * 10, int value may overflow
+int mini_k_solution(unsigned long long current_value, unsigned int current_index, const unsigned int max_value, const unsigned int target_index)
 {
     bool find = false;
 
@@ -36,7 +37,7 @@ unsigned int mini_k_solution(unsigned int current_value, unsigned int current_in
             break;
         }
 
-        // first go deeper
+        // first go deeper, unsigned int may be overflow, so current_value must be unsigned long long type
         if (current_value * 10 <= max_value)
         {
             current_value = current_value * 10;
@@ -55,17 +56,20 @@ unsigned int mini_k_solution(unsigned int current_value, unsigned int current_in
         }
     }
 
-    return current_value;
+    return (int)current_value;
 }
 
 void loop_find_solution(unsigned int n, unsigned int k)
 {
     time_t start = time(nullptr);
+    unsigned long long current_value = 1;
+    unsigned int current_index = 1;
 
-    unsigned int result = mini_k_solution(1, 1, n, k);
+    int result = mini_k_solution(current_value, current_index, n, k);
 
     time_t end = time(nullptr);
-    printf("%u; time consume %f\n", result, difftime(end, start));
+
+    printf("%d; time consume %f\n", result, difftime(end, start));
 }
 
 int str_compare(const void *p1, const void *p2)
