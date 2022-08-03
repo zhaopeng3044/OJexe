@@ -10,19 +10,43 @@
 """
 
 import sys
+import os
+
+sorted_files_prefix = "tmp_sorted_files"
 
 
-def process_func(max_value, k):
+def process_func(max_value, file_name):
+
     str_array = [str(i) for i in range(1, max_value + 1)]
 
     sorted_str_array = sorted(str_array, reverse=False)
 
-    print(sorted_str_array[k - 1])
+    with open(file_name, "w") as fd_out:
+        for v in sorted_str_array:
+            fd_out.write(f"{v}\n")
 
-    # [print(i, v) for i, v in enumerate(sorted_str_array)]
+
+def print_fn(sorted_file_path, k_values):
+    print_cnt = 0
+    k_value_set = set(k_values)
+
+    with open(sorted_file_path, "r") as fd_in:
+        for index, value in enumerate(fd_in):
+            if (index + 1) in k_value_set:
+                print(f"{index+1} -> {value}")
+                print_cnt += 1
+            if len(k_value_set) == print_cnt:
+                break
 
 
 if "__main__" == __name__:
     max_value = int(sys.argv[1])
-    k = int(sys.argv[2])
-    process_func(max_value, k)
+    k_list = [int(k) for k in sys.argv[2:]]
+
+    sorted_file_path = f"{sorted_files_prefix}/{max_value}"
+
+    if os.path.exists(sorted_file_path):
+        print_fn(sorted_file_path, k_list)
+    else:
+        process_func(max_value, sorted_file_path)
+        print_fn(sorted_file_path, k_list)

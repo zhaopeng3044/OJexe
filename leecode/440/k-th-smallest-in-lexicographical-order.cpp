@@ -14,10 +14,12 @@ void loop_find_solution(unsigned int n, unsigned int k);
 
 int main(int argc, char *argv[])
 {
-    const unsigned int SIZE = string_to_int(argv[1]);
-    const unsigned int k = string_to_int(argv[2]);
+    // const unsigned int SIZE = string_to_int(argv[1]);
+    // const unsigned int k = string_to_int(argv[2]);
 
-    process_func(SIZE, k);
+    unsigned int SIZE = 957747794;
+    unsigned int k = 366107483;
+    // process_func(SIZE, k);
 
     loop_find_solution(SIZE, k);
 
