@@ -5,6 +5,8 @@
 #include <math.h>
 #include <string.h>
 #include <ctime>
+#include <algorithm>
+using namespace std;
 
 unsigned int string_to_int(const char *str);
 
@@ -25,6 +27,7 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
 // current_value should be unsigned long long. when current_value * 10, int value may overflow
 int mini_k_solution(unsigned long long current_value, unsigned int current_index, const unsigned int max_value, const unsigned int target_index)
 {
@@ -45,6 +48,21 @@ int mini_k_solution(unsigned long long current_value, unsigned int current_index
         }
         else
         {
+            int max_index_step = (target_index - current_index);
+            int last_value_step = 9 - (current_value % 10);
+            int max_value_step = (max_value - current_value);
+
+            int step = min(min(max_index_step, last_value_step), max_value_step);
+
+            current_value += step;
+            current_index += step;
+
+            if (current_index == target_index)
+            {
+                find = true;
+                break;
+            }
+
             // go upper
             while (9 == (current_value % 10) || current_value + 1 > max_value)
             {
