@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <ctime>
+#include <chrono>
 
 unsigned int string_to_int(const char *str);
 
@@ -61,15 +61,14 @@ int mini_k_solution(unsigned long long current_value, unsigned int current_index
 
 void loop_find_solution(unsigned int n, unsigned int k)
 {
-    time_t start = time(nullptr);
-    unsigned long long current_value = 1;
-    unsigned int current_index = 1;
+    auto start = std::chrono::steady_clock::now();
 
-    int result = mini_k_solution(current_value, current_index, n, k);
+    int result = mini_k_solution(1, 1, n, k);
 
-    time_t end = time(nullptr);
+    auto end = std::chrono::steady_clock::now();
+    auto time_consume = std::chrono::duration<double, std::milli>(end - start).count();
 
-    printf("%d; time consume %f\n", result, difftime(end, start));
+    printf("%d; time consume %f\n", result, time_consume);
 }
 
 int str_compare(const void *p1, const void *p2)
