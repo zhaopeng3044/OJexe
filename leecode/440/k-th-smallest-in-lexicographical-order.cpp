@@ -14,6 +14,8 @@ void process_func(const int MAX_VALUE, int k);
 
 void loop_find_solution(unsigned int n, unsigned int k);
 
+void reverse_loop_find_solution(unsigned int n, unsigned int k);
+
 int main(int argc, char *argv[])
 {
     const unsigned int SIZE = string_to_int(argv[1]);
@@ -24,7 +26,7 @@ int main(int argc, char *argv[])
     // process_func(SIZE, k);
 
     loop_find_solution(SIZE, k);
-
+    reverse_loop_find_solution(SIZE, k);
     return 0;
 }
 
@@ -77,6 +79,51 @@ int mini_k_solution(unsigned long long current_value, unsigned int current_index
     return (int)current_value;
 }
 
+int find_max_value(const unsigned long long current_value)
+{
+    unsigned long long x = 0;
+
+    while (x * 10 <= current_value)
+    {
+        x = x * 10;
+        x += min(9, int(current_value - x));
+    }
+
+    return x;
+}
+
+int max_k_solution(unsigned long long current_value, unsigned int current_index, const unsigned int max_value, const unsigned int target_index)
+{
+    bool find = false;
+
+    while (!find)
+    {
+        if (current_index == target_index)
+        {
+            break;
+        }
+
+        if (0 == (current_value % 10))
+        {
+            current_value /= 10;
+            current_index++;
+        }
+        else
+        {
+            current_value--;
+
+            while (current_value * 10 <= max_value)
+            {
+                current_value *= 10;
+                current_value += min(9, int(max_value - current_value));
+            }
+            current_index++;
+        }
+    }
+
+    return (int)current_value;
+}
+
 void loop_find_solution(unsigned int n, unsigned int k)
 {
     auto start = std::chrono::steady_clock::now();
@@ -86,6 +133,20 @@ void loop_find_solution(unsigned int n, unsigned int k)
     auto end = std::chrono::steady_clock::now();
 
     printf("%d; time consume %.3fs\n", result, (std::chrono::duration<double, std::milli>(end - start).count()) / 1000.0);
+}
+
+void reverse_loop_find_solution(unsigned int n, unsigned int k)
+{
+    auto start = std::chrono::steady_clock::now();
+
+    int current_value = find_max_value(n);
+
+    unsigned int new_k = n + 1 - k;
+    int result = max_k_solution(current_value, 1, n, new_k);
+
+    auto end = std::chrono::steady_clock::now();
+
+    printf("reserve loop %d; time consume %.3fs\n", result, (std::chrono::duration<double, std::milli>(end - start).count()) / 1000.0);
 }
 
 int str_compare(const void *p1, const void *p2)

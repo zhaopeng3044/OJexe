@@ -12,7 +12,7 @@
 import sys
 import os
 
-sorted_files_prefix = "tmp_sorted_files"
+SORTED_FILE_PREFIX = "tmp_sorted_files"
 
 
 def process_func(max_value, file_name):
@@ -21,7 +21,7 @@ def process_func(max_value, file_name):
 
     sorted_str_array = sorted(str_array, reverse=False)
 
-    with open(file_name, "w") as fd_out:
+    with open(file_name, "w", encoding="utf8") as fd_out:
         for v in sorted_str_array:
             fd_out.write(f"{v}\n")
 
@@ -43,7 +43,7 @@ if "__main__" == __name__:
     max_value = int(sys.argv[1])
     k_list = [int(k) for k in sys.argv[2:]]
 
-    sorted_file_path = f"{sorted_files_prefix}/{max_value}"
+    sorted_file_path = f"{SORTED_FILE_PREFIX}/{max_value}"
 
     if os.path.exists(sorted_file_path):
         print_fn(sorted_file_path, k_list)
