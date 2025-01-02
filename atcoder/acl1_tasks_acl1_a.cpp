@@ -59,8 +59,7 @@ void printOriginArrayInfo(Node nodes[], int node_index_map[], int n)
 {
     for (int i = 0; i < n; i++)
     {
-
-        std::cout << nodes[node_index_map[i]].index << " " << nodes[node_index_map[i]].x << " " << nodes[node_index_map[i]].y << std::endl;
+        printf("%d %d %d\n", nodes[node_index_map[i]].index, nodes[node_index_map[i]].x, nodes[node_index_map[i]].y);
     }
 }
 
@@ -87,38 +86,55 @@ int main()
 
     sortNodes(nodes, n);
 
-#ifdef DEBUG
-    for (int i = 0; i < n; i++)
-    {
-        std::cout << "index: " << nodes[i].index << "; x: " << nodes[i].x << "; y: " << nodes[i].y << std::endl;
-    }
-
-    printOriginArrayInfo(nodes, nodex_index_map, n);
-#endif
-
     // init sorted nodes map
     for (int i = 0; i < n; i++)
     {
         nodex_index_map[nodes[i].index] = i;
     }
 
-    int category_index = 0;
+#ifdef DEBUG
+    for (int i = 0; i < n; i++)
+    {
+        printf("index: %d; x: %d; y: %d\n", nodes[i].index, nodes[i].x, nodes[i].y);
+    }
+
+    printOriginArrayInfo(nodes, nodex_index_map, n);
+
+    printf("y=7 info: %d %d %d\n", nodes[nodex_index_map[Y_INDEX_MAP[7]]].index, nodes[nodex_index_map[Y_INDEX_MAP[7]]].x, nodes[nodex_index_map[Y_INDEX_MAP[7]]].y);
+    printf("x=3 info: %d %d %d\n", nodes[nodex_index_map[X_INDEX_MAP[3]]].index, nodes[nodex_index_map[X_INDEX_MAP[3]]].x, nodes[nodex_index_map[X_INDEX_MAP[3]]].y);
+#endif
+
+    int max_category_index = 0;
     for (int i = 0; i < n - 1; i++)
     {
-        int tmp_category_index = -1;
-        if (nodes[i].category_index == -1)
+        int current_category_index = max_category_index;
+        if (-1 != nodes[i].category_index)
         {
-            nodes[i].category_index = category_index;
-            tmp_category_index = category_index;
+            current_category_index = nodes[i].category_index;
         }
-        else
+        tmp_path_array[0] = i;
+        int tmp_path_array_index = 1;
+
+        for (int j = nodes[i].y + 1; j <= n; j++)
         {
-            tmp_category_index = nodes[i].category_index;
+            if (nodes[nodex_index_map[Y_INDEX_MAP[j]]].x > nodes[i].x)
+            {
+                if (-1 == nodes[nodex_index_map[Y_INDEX_MAP[j]]].category_index)
+                {
+                    nodes[nodex_index_map[Y_INDEX_MAP[j]]].category_index = current_category_index;
+                    tmp_path_array[tmp_path_array_index++] = nodex_index_map[Y_INDEX_MAP[j]];
+                }
+                else
+                {
+                    current_category_index = nodes[nodex_index_map[Y_INDEX_MAP[j]]].category_index;
+                    for (int k = 0; k < tmp_path_array_index; k++)
+                    {
+                        nodes[tmp_path_array[k]].category_index = current_category_index;
+                    }
+                }
+                
+            }
         }
-
-        int k = 0;
-
-       
     }
     return 0;
 }
