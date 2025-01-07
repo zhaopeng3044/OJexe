@@ -25,7 +25,7 @@
 #include <cstring>
 #include <climits>
 
-#define DEBUG
+//#define DEBUG
 
 const int MAX_ELEMENT_NUM = 200000;
 
@@ -40,6 +40,7 @@ int nodex_index_map[MAX_ELEMENT_NUM];
 int tmp_path_array[MAX_ELEMENT_NUM];
 int X_INDEX_MAP[MAX_ELEMENT_NUM + 1];
 int Y_INDEX_MAP[MAX_ELEMENT_NUM + 1];
+int category_result[MAX_ELEMENT_NUM];
 
 bool compareNodes(const Node &a, const Node &b)
 {
@@ -73,6 +74,7 @@ int main()
     memset(tmp_path_array, 0, sizeof(tmp_path_array));
     memset(X_INDEX_MAP, 0, sizeof(X_INDEX_MAP));
     memset(Y_INDEX_MAP, 0, sizeof(Y_INDEX_MAP));
+    memset(category_result, 0, sizeof(category_result));
 
     for (int i = 0; i < n; i++)
     {
@@ -151,5 +153,18 @@ int main()
     printOriginArrayInfo(nodes, nodex_index_map, n);
 #endif
 
+    for (int i = 0; i < n; i++)
+    {
+        category_result[nodes[i].category_index] += 1;
+    }
+
+    // print final result
+    for (int i = 0; i < n; i++)
+    {
+        Node *tmp_node = &nodes[nodex_index_map[i]];
+        // printf("%d %d %d %d\n", tmp_node->x, tmp_node->y, tmp_node->category_index, category_result[tmp_node->category_index], tmp_node->index);
+        printf("%d\n",category_result[tmp_node->category_index]);
+        
+    }
     return 0;
 }
